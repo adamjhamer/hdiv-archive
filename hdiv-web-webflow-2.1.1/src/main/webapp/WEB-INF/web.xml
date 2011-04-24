@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<!-- The master configuration file for this Spring web application 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/config/web-application-config.xml
+		</param-value>
+	</context-param>
+	-->
+	<!-- HDIV -->
+    <context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>
+	    	/WEB-INF/config/web-application-config.xml
+			classpath*:org/hdiv/config/hdiv-core-applicationContext.xml
+			classpath*:org/hdiv/config/hdiv-spring-mvc-applicationContext.xml
+			/WEB-INF/hdiv-validations.xml
+			/WEB-INF/hdiv-config.xml
+		</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.hdiv.listener.InitListener</listener-class>
+	</listener>
+
+	<!--  HDIV Validator Filter  -->
+ 	<filter>
+		<filter-name>ValidatorFilter</filter-name>
+		<filter-class>org.hdiv.filter.ValidatorFilter</filter-class>
+	</filter>
+
+ 	<filter-mapping>
+		<filter-name>ValidatorFilter</filter-name>
+		<url-pattern>/spring/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Enables use of HTTP methods PUT and DELETE -->
+	<filter>
+		<filter-name>httpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>httpMethodFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Enables Spring Security -->
+	<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
+	<!-- Loads the Spring web application context -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+  	<!-- Serves static resource content from .jar files such as spring-faces.jar -->
+	<servlet>
+		<servlet-name>Resources Servlet</servlet-name>
+		<servlet-class>org.springframework.js.resource.ResourceServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+		
+	<!-- Map all /resources requests to the Resource Servlet for handling -->
+	<servlet-mapping>
+		<servlet-name>Resources Servlet</servlet-name>
+		<url-pattern>/resources/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- The front controller of this Spring Web application, responsible for handling all application requests -->
+	<servlet>
+		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value></param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<!-- Map all *.spring requests to the DispatcherServlet for handling -->
+	<servlet-mapping>
+		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+		<url-pattern>/spring/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<jsp-config>	    
+	    <taglib>
+	        <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+	        <taglib-location>/WEB-INF/tlds/hdiv-c.tld</taglib-location>
+	    </taglib>
+	    <taglib>
+	        <taglib-uri>http://www.springframework.org/tags/form</taglib-uri>
+	        <taglib-location>/WEB-INF/tlds/hdiv-spring-form-3_0.tld</taglib-location>
+	    </taglib>
+	    <taglib>
+	        <taglib-uri>http://www.springframework.org/tags</taglib-uri>
+	        <taglib-location>/WEB-INF/tlds/hdiv-spring.tld</taglib-location>
+	    </taglib>
+	</jsp-config>	
+
+</web-app>

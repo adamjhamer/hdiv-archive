@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    
+    <bean id="multipartResolver" class="org.hdiv.web.multipart.HDIVMultipartResolver">
+	
+	    <!-- one of the properties available; the maximum file size in bytes -->
+	    <property name="maxUploadSize" value="100000"/>
+	</bean>
+	
+    <bean id="multipartConfig" class="org.hdiv.config.multipart.SpringMVCMultipartConfig">
+    	<property name="multipartResolver"><ref bean="multipartResolver" /></property>
+    </bean>
+
+</beans>
+

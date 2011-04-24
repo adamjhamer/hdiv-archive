@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="validatorHelper" class="org.hdiv.filter.JsfValidatorHelper" init-method="init">
+		<property name="logger"><ref bean="logger" /></property>
+		<property name="stateUtil"><ref bean="stateUtil" /></property>
+		<property name="hdivParameter" ref="hdivParameter"/>
+		<property name="hdivConfig" ref="config"/>
+		<property name="strategy" ref="strategy"/>
+		<property name="session" ref="sessionHDIV"/>
+		<property name="dataValidatorFactory" ref="dataValidatorFactory"/>
+		<property name="dataComposerFactory" ref="dataComposerFactory"/>
+	</bean>
+	 
+	<!-- Configuración propia de la versión de JSF -->
+	
+	<bean id="HDIVFacesEventListener" class="org.hdiv.events.HDIVFacesEventListener">
+		<property name="config" ref="config"/>
+		<property name="htmlInputHiddenValidator" ref="htmlInputHiddenValidator"/>
+		<property name="requestParamValidator" ref="requestParameterValidator"/>
+		<property name="uiCommandValidator" ref="uiCommandValidator"/>
+		<property name="editabeValidator" ref="editableValidator" />
+	</bean>
+
+	<!-- Objetos ComponentValidator -->
+	<bean id="requestParameterValidator" class="org.hdiv.validators.RequestParameterValidator">
+		<property name="hdivConfig" ref="config"/>
+	</bean>
+	<bean id="uiCommandValidator" class="org.hdiv.validators.UICommandValidator"/>
+	<bean id="htmlInputHiddenValidator" class="org.hdiv.validators.HtmlInputHiddenValidator"></bean>
+	<bean id="editableValidator" class="org.hdiv.validators.EditableValidator" >
+		<property name="hdivConfig" ref="config" />
+	</bean>
+
+</beans>

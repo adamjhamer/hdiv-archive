@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+    <!--  CONFIDENTIALITY  -->
+   	<bean id="confidentiality" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>
+
+    <!--  COOKIES INTEGRITY  -->
+   	<bean id="avoidCookiesIntegrity" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>true</value>
+          </constructor-arg>
+    </bean>
+
+    <!--  COOKIES CONFIDENTIALITY  -->    
+   	<bean id="avoidCookiesConfidentiality" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>true</value>
+          </constructor-arg>
+    </bean> 
+    
+        <bean id="avoidValidationInUrlsWithoutParams" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>
+	
+   	<bean id="strategy" class="java.lang.String">
+         <constructor-arg>
+               <value>cipher</value>
+          </constructor-arg>
+    </bean>	
+	
+	<!--LOGGER -->
+	<bean id="userData" class="org.hdiv.logs.UserData" singleton="false" />
+	<bean id="logger" class="org.hdiv.logs.Logger" singleton="false">
+		<property name="userData">
+			<ref bean="userData" />
+		</property>
+	</bean>	
+		
+	<!-- STATE BEANS -->
+	<bean id="cache" class="org.hdiv.session.StateCache" singleton="false" init-method="init">
+		<property name="maxSize">
+			<value>5</value>
+		</property>
+	</bean>	
+	
+	<bean id="encoding" class="org.hdiv.util.EncodingUtil" singleton="false" init-method="initTesting">
+		<property name="session"><ref bean="mockSession" /></property>	
+	</bean>
+	
+	<bean id="stateutil" class="org.hdiv.state.StateUtil" singleton="false">
+		<property name="HDIVParameter"><value>_HDIV_STATE_</value></property>
+		<property name="encodingUtil"><ref bean="encoding" /></property>
+		<property name="strategy"><ref bean="strategy" /></property>
+	</bean>		
+	 
+	<!--VALIDATION FILTER-->	
+	<bean id="validatorHelper" class="org.hdiv.filter.ValidatorHelperRequest" singleton="false" init-method="initTesting">
+		<property name="logger"><ref bean="logger" /></property>
+        <property name="target"><ref bean="targetName"/></property>
+        <property name="request"><ref bean="mockRequest"/></property>
+        <property name="stateUtil"><ref bean="stateutil"/></property>
+        <property name="hdivConfig"><ref bean="config"/></property>
+     </bean>    	
+     	
+	<!-- GENERIC BEANS-->
+	<bean id="validationResult" class="org.hdiv.dataValidator.ValidationResult" singleton="false"/>
+	
+	<!-- CIPHER BEANS -->
+	<bean id="mockCipher" class="org.hdiv.cipher.MockCipherHTTP">
+		<property name="algorithm"><value>AES</value></property>
+    </bean>
+    
+	<bean id="keyFactory" class="org.hdiv.cipher.KeyFactory">
+		<property name="algorithm">
+			<value>AES</value>
+		</property>
+		<property name="keySize">
+			<value>128</value>
+		</property>		
+		<property name="prngAlgorithm">
+			<value>SHA1PRNG</value>
+		</property>
+		<property name="provider">
+			<value>SUN</value>
+		</property>
+	</bean>
+        
+	<bean id="mockServletContext" class="org.springframework.mock.web.MockServletContext"/>
+	
+	<bean id="mockHttpSession" class="org.springframework.mock.web.MockHttpSession"/>
+	
+	<bean id="mockRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
+	
+	<bean id="mockSession" class="org.hdiv.session.SessionHDIV">		
+		<property name="cipherName"><value>mockCipher</value></property>
+		<property name="requestName"><value>stateId</value></property>
+		<property name="cacheName"><ref bean="cacheName" /></property>
+		<property name="keyName"><ref bean="keyName" /></property>				
+	</bean>
+	 
+	<bean id="mockApplication" depends-on="mockServletContext" class="org.hdiv.application.ApplicationHDIV">	
+		<property name="application"><ref bean="mockServletContext"/></property>
+	</bean>
+	
+	<bean id="dataComposercipher" depends-on="mockApplication" class="org.hdiv.dataComposer.DataComposerCipher" singleton="false" init-method="initTesting">
+		<property name="session"><ref bean="mockSession"/></property>
+		<property name="application"><ref bean="mockApplication"/></property>
+		<property name="encodingUtil"><ref bean="encoding" /></property>
+		<property name="allowedLength"><value>4096</value></property>
+		<property name="confidentiality"><ref bean="confidentiality" /></property>
+		<property name="hdivConfig"><ref bean="config" /></property>				
+	</bean>	
+	
+	<bean id="dataComposermemory" depends-on="mockApplication" class="org.hdiv.dataComposer.DataComposerMemory" singleton="false" init-method="initTesting">
+		<property name="session"><ref bean="mockSession"/></property>
+		<property name="application"><ref bean="mockApplication"/></property>
+		<property name="confidentiality"><ref bean="confidentiality" /></property>
+		<property name="hdivConfig"><ref bean="config" /></property>		
+	</bean>		
+	
+	<bean id="dataComposerhash" depends-on="mockApplication" class="org.hdiv.dataComposer.DataComposerHash" singleton="false" init-method="initTesting">
+		<property name="session"><ref bean="mockSession"/></property>
+		<property name="application"><ref bean="mockApplication"/></property>
+		<property name="encodingUtil"><ref bean="encoding" /></property>
+		<property name="allowedLength"><value>4096</value></property>
+		<property name="confidentiality"><ref bean="confidentiality" /></property>
+        <property name="hdivConfig"><ref bean="config"/></property>				
+	</bean>		
+	
+	<!-- DATA  VALIDATOR -->	
+	<bean id="dataValidator" class="org.hdiv.dataValidator.DataValidator" singleton="false">
+		<property name="validationResult"><ref bean="validationResult"/></property>
+		<property name="confidentiality"><ref bean="confidentiality" /></property>		
+	</bean>
+	
+	
+	<!--  HDIV Configuration Bean  -->
+	<bean id="config" class="org.hdiv.config.HDIVConfig">
+
+		<property name="userStartParameters">					
+			<list>
+				<value>org.apache.struts.action.TOKEN</value>
+				<value>org.apache.struts.taglib.html.TOKEN</value>				
+			</list>			
+		</property>
+		
+		<property name="userStartPages">
+			<list>
+				<value>/testing.do</value>				
+			</list>
+		</property>		
+
+		<property name="errorPage">
+			<value>error.jsp</value>
+		</property>
+		
+		<property name="confidentiality"><ref bean="confidentiality" /></property>		
+		
+		<property name="paramsWithoutValidation">
+			<map></map>
+		</property>	
+		
+		<property name="cookiesIntegrity">
+			<ref bean="avoidCookiesIntegrity" />
+		</property>
+		
+		<property name="cookiesConfidentiality">
+			<ref bean="avoidCookiesConfidentiality" />
+		</property>					
+
+	</bean>
+
+	<bean id="hdivParameter" class="java.lang.String">
+         <constructor-arg>
+               <value>_HDIV_STATE_</value>
+          </constructor-arg>  
+    </bean>	
+	
+	<bean id="cacheName" class="java.lang.String">
+         <constructor-arg>
+               <value>cache</value>
+          </constructor-arg>  
+    </bean>    
+
+	<bean id="keyName" class="java.lang.String">
+         <constructor-arg>
+               <value>key</value>
+          </constructor-arg>  
+    </bean>	
+       	
+    <!--  this bean be named messageSource because the ApplicationContext 
+    	  will look for a bean specifically by that name  -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>MessagesResources</value>
+		</property>
+    </bean>
+
+	<bean id="targetName" class="java.lang.String">
+         <constructor-arg>
+               <value>testAction</value>
+          </constructor-arg>  
+    </bean>	
+    
+    <bean id="multipartResolver" class="org.hdiv.web.multipart.HDIVMultipartResolver">
+	
+	    <!-- one of the properties available; the maximum file size in bytes -->
+	    <property name="maxUploadSize" value="10000"/>
+	</bean>
+    
+    <bean id="multipartConfig" class="org.hdiv.config.multipart.SpringMVCMultipartConfig">
+    	<property name="multipartResolver"><ref bean="multipartResolver" /></property>
+    </bean>   
+	
+</beans>

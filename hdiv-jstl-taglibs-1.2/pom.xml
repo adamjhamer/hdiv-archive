@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<!--
+	/*
+	* Copyright 2005-2008 hdiv.org
+	*
+	* Licensed under the Apache License, Version 2.0 (the "License");
+	* you may not use this file except in compliance with the License.
+	* You may obtain a copy of the License at
+	* 
+	*      http://www.apache.org/licenses/LICENSE-2.0
+	* 
+	* Unless required by applicable law or agreed to in writing, software
+	* distributed under the License is distributed on an "AS IS" BASIS,
+	* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	* See the License for the specific language governing permissions and
+	* limitations under the License.
+	*/
+-->
+  <parent>
+    <artifactId>hdiv</artifactId>
+    <groupId>org.hdiv</groupId>
+    <version>2.1.0.RC1</version>
+  </parent>
+  <artifactId>hdiv-jstl-taglibs-1.2</artifactId>
+  <name>HDIV jstl-taglibs-1.2</name>
+  <description>Java Web Application Security Framework</description>
+  <url>http://www.hdiv.org</url>
+  <scm>
+    <connection>scm:svn:https://hdiv.svn.sourceforge.net/svnroot/hdiv/trunk/hdiv-jstl-taglibs-1.2/</connection>
+    <developerConnection>scm:svn:https://hdiv.svn.sourceforge.net/svnroot/hdiv/trunk/hdiv-jstl-taglibs-1.2/</developerConnection>
+    <url>https://hdiv.svn.sourceforge.net</url>
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+
+    <dependency>
+      <groupId>org.hdiv</groupId>
+      <artifactId>hdiv-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+	<!-- Servlet -->		
+	<dependency> 
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
+	</dependency>	
+	<dependency>
+		<groupId>javax.servlet.jsp</groupId>
+		<artifactId>jsp-api</artifactId>
+		<version>2.1</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId> 
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+	</dependency>
+  </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <doctitle>HDIV Tags</doctitle>
+          <header>HDIV API ${project.version}</header>
+          <footer>HDIV ${project.version}</footer>
+          <destDir>../docs/api/hdiv-jstl-taglibs-1.2</destDir>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

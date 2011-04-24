@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!--  CONFIDENTIALITY  -->
+   	<bean id="confidentiality" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>
+    
+    <!--  COOKIES INTEGRITY  -->
+   	<bean id="avoidCookiesIntegrity" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>
+
+    <!--  COOKIES CONFIDENTIALITY  -->    
+   	<bean id="avoidCookiesConfidentiality" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>       
+
+    <!--  STRATEGY -->
+   	<bean id="strategy" class="java.lang.String">
+         <constructor-arg>
+               <value>memory</value>
+          </constructor-arg>
+    </bean>
+
+    <!--  RANDOM NAME FOR HDIV PARAMETER -->
+   	<bean id="randomName" class="java.lang.Boolean">
+         <constructor-arg>
+               <value>false</value>
+          </constructor-arg>
+    </bean>
+
+	<!--  HDIV Configuration Bean  -->
+	<bean id="config" class="org.hdiv.config.HDIVConfig">
+	
+		<property name="userStartParameters">			
+			<list></list>
+		</property>
+		
+		<property name="userStartPages">
+			<list>
+				<value>/</value>
+				<value>/ShowSource.jsp</value>
+				<value>/redirect/.*</value>
+				<value>/elsupport/.*</value>
+				<value>/conditionals/.*</value>
+				<value>/iterators/.*</value>
+				<value>/import/.*</value>
+				<value>/format/.*</value>
+				<value>/xml/.*</value>
+				<value>/sql/.*</value>
+				<value>/functions/.*</value>
+				<value>/tlv/.*</value>
+				<value>/misc/.*</value>
+			</list>			
+		</property> 
+
+		<property name="errorPage">
+			<value>/error.jsp</value>
+		</property> 
+				
+		<property name="confidentiality">
+			<ref bean="confidentiality" />
+		</property>
+		
+		<property name="paramsWithoutValidation">
+			<map>								
+				<entry key="/ShowSource.jsp">
+					<list>
+						<value>param1</value>
+						<value>param2</value>
+					</list>   
+				</entry>
+			</map>
+		</property>		
+		
+		<property name="validations">
+			<ref bean="editableParemetersValidations" />
+		</property>		
+		
+		<property name="cookiesIntegrity">
+			<ref bean="avoidCookiesIntegrity" />
+		</property>
+		
+		<property name="cookiesConfidentiality">
+			<ref bean="avoidCookiesConfidentiality" />
+		</property>
+		
+		<property name="protectedExtensions">			
+			<list>
+				<value>.*.faces</value>				
+			</list>
+		</property>	
+	</bean>
+    
+</beans>
+
