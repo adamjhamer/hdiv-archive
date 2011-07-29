@@ -26,8 +26,9 @@
 	<repositories>
 		<repository>
 			<id>jboss</id>
-			<url>http://repository.jboss.org/maven2/ </url>
+			<url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
 		</repository>
+
 		<repository>
 			<id>javanet</id>
 			<url>http://download.java.net/maven/2/</url>
@@ -60,7 +61,7 @@
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
-			<version>1.2</version>
+			<version>1.0</version>
 			<scope>compile</scope>
 			<optional>true</optional>
 		</dependency>
