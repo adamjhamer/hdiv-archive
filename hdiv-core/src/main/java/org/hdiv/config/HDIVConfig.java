@@ -35,6 +35,8 @@ import org.hdiv.validator.IValidation;
  */
 public class HDIVConfig {
 
+	private boolean disableHDIV = true;
+
 	/**
 	 * Map with the pages that will not be Treated by the HDIV filter. The init pages
 	 * are initialized by the Spring factory.
@@ -117,7 +119,14 @@ public class HDIVConfig {
 	 * @since HDIV 2.1.0
 	 */
 	private List excludedURLExtensions;
-	
+
+	public boolean isDisableHDIV() {
+		return disableHDIV;
+	}
+	public void setDisableHDIV(boolean disableHDIV) {
+		this.disableHDIV = disableHDIV;
+	}
+
 	/**
 	 * Checks if <code>parameter</code> is an init parameter, in which case it will
 	 * not be treated by HDIV.

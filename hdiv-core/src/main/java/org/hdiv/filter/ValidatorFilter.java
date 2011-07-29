@@ -128,6 +128,7 @@ public class ValidatorFilter extends OncePerRequestFilter {
 		
 		try {			
 
+			boolean disableHDIV = hdivConfig.isDisableHDIV();
 			boolean legal = false;
 			boolean isSizeLimitExceeded = false;
 
@@ -161,7 +162,10 @@ public class ValidatorFilter extends OncePerRequestFilter {
 			}
 
 			if (!isSizeLimitExceeded) {
-				legal = this.validationHelper.validate(requestWrapper);
+				if (disableHDIV)
+					legal = true;
+				else
+					legal = this.validationHelper.validate(requestWrapper);
 			}
 
 			if (legal) {
