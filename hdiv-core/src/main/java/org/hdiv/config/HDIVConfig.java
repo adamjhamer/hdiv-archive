@@ -35,7 +35,7 @@ import org.hdiv.validator.IValidation;
  */
 public class HDIVConfig {
 
-	private boolean disableHDIV = true;
+	private boolean disableHDIV = false;
 
 	/**
 	 * Map with the pages that will not be Treated by the HDIV filter. The init pages
