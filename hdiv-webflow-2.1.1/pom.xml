@@ -31,7 +31,7 @@
 				Releases
 			</name>
 			<url>
-				http://repository.springsource.com/maven/bundles/release
+				https://repository.springsource.com/maven/bundles/release
 			</url>
 		</repository>
 		<repository>
@@ -41,7 +41,7 @@
 				Releases
 			</name>
 			<url>
-				http://repository.springsource.com/maven/bundles/external
+				https://repository.springsource.com/maven/bundles/external
 			</url>
 		</repository>
 	</repositories>
